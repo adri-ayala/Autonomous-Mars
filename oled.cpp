@@ -2,8 +2,8 @@
 #include <Wire.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
+#include <string.h>
 
-// DISPLAY CONFIG
 #define SCREEN_WIDTH 128
 #define SCREEN_HEIGHT 64
 #define OLED_RESET -1
@@ -11,48 +11,49 @@
 
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
-// STATE
-String currentSong = "No Song";
-int currentSpeed = 0;
+// READY SCREEN
+void oledShowReady() {
+    display.clearDisplay();
+
+    display.setTextSize(3);
+    display.setTextColor(SSD1306_WHITE);
+
+    display.setCursor(10, 20);
+    display.print("READY");
+
+    display.display();
+}
+
+// SIMPLE DISPLAY
+void oledShowLine(const char* line) {
+    display.clearDisplay();
+
+    display.setTextSize(2);
+    display.setTextColor(SSD1306_WHITE);
+
+    display.setCursor(0, 20);
+    display.print(line);
+
+    display.display();
+}
 
 // INIT
 void oledInit() {
-    Serial.println("Initializing OLED...");
-
     if (!display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS)) {
-        Serial.println("OLED failed!");
         for (;;);
     }
 
     display.clearDisplay();
-    display.display();
-}
+    display.setTextColor(SSD1306_WHITE);
 
-// SHOW MUSIC DASHBOARD 
-void oledShowMusic(const char* song, int speed) {
-    currentSong = song;
-    currentSpeed = speed;
+    // SHOW READY
+    display.setTextSize(3);
+    display.setCursor(10, 20);
+    display.print("READY");
+    display.display();
+
+    delay(800);
 
     display.clearDisplay();
-
-    // Title
-    display.setTextSize(1);
-    display.setCursor(0, 0);
-    display.println("Now Playing:");
-
-    // Song name
-    display.setTextSize(2);
-    display.setCursor(0, 14);
-    display.println(currentSong);
-
-    // Speed
-    display.setTextSize(1);
-    display.setCursor(0, 42);
-    display.print("Speed: ");
-    display.print(currentSpeed);
-    display.println(" mph");
-
     display.display();
 }
-/*void oledTask() {
-}*/

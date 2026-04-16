@@ -1,11 +1,9 @@
 #include "Buzzer.h"
 
-#define BUZZER_PIN 13
+#define BUZZER_PIN 25
 #define REST 0
 
-// =======================
 // SONGS
-// =======================
 int melody1[] = {
   659,8, 587,8, 370,4, 415,4,
   554,8, 494,8, 294,4, 330,4,
@@ -28,9 +26,7 @@ int tempo2 = 144;
 int notes2 = sizeof(melody2) / sizeof(melody2[0]) / 2;
 int wholenote2;
 
-// =======================
 // STATE
-// =======================
 int currentSong = 1;
 bool isPlaying = false;
 
@@ -40,9 +36,7 @@ int noteDuration = 0;
 
 bool initialized = false;
 
-// =======================
 // INTERNAL UPDATE
-// =======================
 void updateBuzzer() {
   if (!isPlaying) return;
 
@@ -87,9 +81,7 @@ void updateBuzzer() {
   }
 }
 
-// =======================
 // MAIN ENTRY POINT
-// =======================
 void buzzerTask(String cmd) {
 
   if (!initialized) {
@@ -100,6 +92,7 @@ void buzzerTask(String cmd) {
 
     initialized = true;
   }
+
   cmd.toLowerCase();
   cmd.trim();
 
@@ -115,5 +108,6 @@ void buzzerTask(String cmd) {
     currentSong = (currentSong == 1) ? 2 : 1;
     currentNote = 0;
   }
+
   updateBuzzer();
 }

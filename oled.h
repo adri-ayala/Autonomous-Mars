@@ -4,7 +4,6 @@
 #include <Arduino.h>
 
 void oledInit();
-void oledShowMusic(const char* song, int speed);
-void oledTask();
+void oledShowLine(const char* line);
 
 #endif

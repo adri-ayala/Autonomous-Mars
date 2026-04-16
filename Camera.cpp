@@ -1,68 +1,96 @@
 #include "Camera.h"
+#include "OLED.h"
+#include "Lights.h"
+#include "ServoControl.h"
+#include "MotorControl.h"
 #include <Pixy2.h>
 
 Pixy2 pixy;
 
 int lastBarcode = -1;
 
-// Function prototype
 void interpretBarcode(int code);
 
-// =======================
 // INIT
-// =======================
 void cameraInit() {
-    Serial.println("Initializing Pixy Camera...");
     pixy.init();
-    Serial.println("Pixy Ready!");
 }
 
-// =======================
-// MAIN
-// =======================
+// MAIN LOOP
 void cameraTask() {
     pixy.line.getAllFeatures();
 
-    // Check if barcode detected
     if (pixy.line.numBarcodes > 0) {
         int code = pixy.line.barcodes[0].m_code;
 
         if (code != lastBarcode) {
             lastBarcode = code;
-
-            Serial.print("Barcode detected: ");
-            Serial.println(code);
-
             interpretBarcode(code);
         }
     }
 }
 
-// =======================
-// BARCODE INTERPRETER
-// =======================
+// BARCODE LOGIC
 void interpretBarcode(int code) {
     switch (code) {
-        case 0:
-            Serial.println("START");
+
+        case 0: // START
+            oledShowLine("START");
+            allLightsOff();
+            servoCenter();
+            moveForward();
             break;
-        case 1:
-            Serial.println("TURN RIGHT");
+
+        case 1: // TURN RIGHT
+            oledShowLine("RIGHT");
+            stopMotors();
+            rightTurnSignal();
+            servoRight();
+            turnRight90();
+            servoCenter();
+            moveForward();
             break;
-        case 2:
-            Serial.println("U-TURN RIGHT");
+
+        case 2: // U-TURN RIGHT
+            oledShowLine("U RIGHT");
+            stopMotors();
+            rightUTurnSignal();
+            servoRight();
+            uTurnRight();
+            servoCenter();
+            moveForward();
             break;
-        case 3:
-            Serial.println("U-TURN LEFT");
+
+        case 3: // U-TURN LEFT
+            oledShowLine("U LEFT");
+            stopMotors();
+            leftUTurnSignal();
+            servoLeft();
+            uTurnLeft();
+            servoCenter();
+            moveForward();
             break;
-        case 4:
-            Serial.println("TURN LEFT");
+
+        case 4: // TURN LEFT
+            oledShowLine("LEFT");
+            stopMotors();
+            leftTurnSignal();
+            servoLeft();
+            turnLeft90();
+            servoCenter();
+            moveForward();
             break;
-        case 5:
-            Serial.println("STOP");
+
+        case 5: // STOP
+            oledShowLine("STOP");
+            stopMotors();
+            brakeLights();
+            servoCenter();
             break;
+
         default:
-            Serial.println("UNKNOWN BARCODE");
+            oledShowLine("UNKNOWN");
+            stopMotors();
             break;
     }
 }
