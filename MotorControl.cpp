@@ -1,5 +1,5 @@
 #include "MotorControl.h"
-
+#include "LineSensing.h"
 // =======================
 // MOTOR PINS (FROM YOUR TABLE)
 // =======================
@@ -28,15 +28,38 @@ void motorInit() {
 
 // =======================
 void moveForward() {
-    digitalWrite(INA1A, HIGH);
-    digitalWrite(INA2A, LOW);
-
-    digitalWrite(INA1B, HIGH);
-    digitalWrite(INA2B, LOW);
-
-    analogWrite(MotorPWM_A, 150);
-    analogWrite(MotorPWM_B, 150);
+    bool L = leftOnLine();
+    bool R = rightOnLine();
+ 
+    if (L && !R) {
+        // Drifted left — steer right
+        digitalWrite(INA1A, HIGH);
+        digitalWrite(INA2A, LOW);
+        digitalWrite(INA1B, HIGH);
+        digitalWrite(INA2B, LOW);
+        analogWrite(MotorPWM_A, 150);   // Left motor full
+        analogWrite(MotorPWM_B, 80);    // Right motor slow
+ 
+    } else if (!L && R) {
+        // Drifted right — steer left
+        digitalWrite(INA1A, HIGH);
+        digitalWrite(INA2A, LOW);
+        digitalWrite(INA1B, HIGH);
+        digitalWrite(INA2B, LOW);
+        analogWrite(MotorPWM_A, 80);    // Left motor slow
+        analogWrite(MotorPWM_B, 150);   // Right motor full
+ 
+    } else {
+        // Centred — go straight
+        digitalWrite(INA1A, HIGH);
+        digitalWrite(INA2A, LOW);
+        digitalWrite(INA1B, HIGH);
+        digitalWrite(INA2B, LOW);
+        analogWrite(MotorPWM_A, 150);
+        analogWrite(MotorPWM_B, 150);
+    }
 }
+ 
 
 // =======================
 void stopMotors() {
