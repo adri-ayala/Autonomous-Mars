@@ -1,8 +1,7 @@
 #include "Buzzer.h"
-
+#include <Arduino.h>
 #define BUZZER_PIN 25
 #define REST 0
-
 // SONGS
 int melody1[] = {
   659,8, 587,8, 370,4, 415,4,

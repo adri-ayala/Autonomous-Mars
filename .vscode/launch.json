@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "c:/Users/Anton/Documents/GitHub/Autonomous-Mars",
-      "program": "c:/Users/Anton/Documents/GitHub/Autonomous-Mars/build/Debug/outDebug",
+      "cwd": "c:/Users/Anton/Documents/GitHub/Autonomous-Mars/main",
+      "program": "c:/Users/Anton/Documents/GitHub/Autonomous-Mars/main/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [

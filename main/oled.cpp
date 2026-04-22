@@ -10,6 +10,8 @@
 #define SCREEN_ADDRESS 0x3C
 
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
+char desiredLine[17] = "READY";
+char displayedLine[17] = "";
 
 // READY SCREEN
 void oledShowReady() {
@@ -37,6 +39,21 @@ void oledShowLine(const char* line) {
     display.display();
 }
 
+void oledSetMessage(const char* line) {
+    strncpy(desiredLine, line, sizeof(desiredLine) - 1);
+    desiredLine[sizeof(desiredLine) - 1] = '\0';
+}
+
+void oledTask() {
+    if (strcmp(desiredLine, displayedLine) == 0) {
+        return;
+    }
+
+    oledShowLine(desiredLine);
+    strncpy(displayedLine, desiredLine, sizeof(displayedLine) - 1);
+    displayedLine[sizeof(displayedLine) - 1] = '\0';
+}
+
 // INIT
 void oledInit() {
     if (!display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS)) {
@@ -56,4 +73,7 @@ void oledInit() {
 
     display.clearDisplay();
     display.display();
+
+    strcpy(displayedLine, "");
+    oledSetMessage("READY");
 }
