@@ -1,0 +1,31 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Arduino Verify",
+      "type": "shell",
+      "command": "C:\\Program Files\\Arduino IDE\\resources\\app\\lib\\backend\\resources\\arduino-cli.exe",
+      "args": [
+        "compile",
+        "--fqbn",
+        "arduino:avr:mega",
+        "C:\\Users\\Anton\\Documents\\GitHub\\Autonomous-Mars\\main"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Arduino Upload",
+      "type": "shell",
+      "command": "C:\\Program Files\\Arduino IDE\\resources\\app\\lib\\backend\\resources\\arduino-cli.exe",
+      "args": [
+        "upload",
+        "-p",
+        "COM4",
+        "--fqbn",
+        "arduino:avr:mega",
+        "C:\\Users\\Anton\\Documents\\GitHub\\Autonomous-Mars\\main"
+      ],
+      "problemMatcher": []
+    }
+  ]
+}
